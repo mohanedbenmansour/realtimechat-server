@@ -7,6 +7,10 @@ import * as bcrypt from 'bcrypt';
 import { Payload } from 'src/types/payload';
 @Injectable()
 export class UserService {
+ async findAll() {
+  const users = await this.userModel.find({});
+return users
+  }
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
   private sanitizeUser(user: User) {

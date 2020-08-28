@@ -1,10 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const PostSchema = new mongoose.Schema({
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  owner: String,
   description: String,
   price: String,
   image: String,
