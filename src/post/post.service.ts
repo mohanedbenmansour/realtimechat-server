@@ -23,19 +23,18 @@ export class PostService {
     return await post.save();
   }
 
-  async updatePost(id: string, postDTO: UpdatePostDTO): Promise<Post> {
-    const post = await this.postModel.findById(id);
-    const user = await this.userModel.findById(post.owner);
-    console.log(post.owner, postDTO.owner);
-    if (postDTO.owner != post.owner) {
-      throw new HttpException(
-        'You do not own this product',
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
-    await post.updateOne(postDTO);
-    return post;
-  }
+  // async updatePost(id: string, postDTO: UpdatePostDTO): Promise<Post> {
+  //   const post = await this.postModel.findById(id);
+  //   const user = await this.userModel.findById(post.owner);
+  //   if (postDTO.owner != post.owner || user.role != 'ADMIN') {
+  //     throw new HttpException(
+  //       'You do not own this product',
+  //       HttpStatus.UNAUTHORIZED,
+  //     );
+  //   }
+  //   await post.updateOne(postDTO);
+  //   return post;
+  // }
   async delete(id: string, userId: string): Promise<Post> {
     const post = await this.postModel.findById(id);
     const user = await this.userModel.findById(post.owner);
@@ -46,11 +45,16 @@ export class PostService {
         HttpStatus.UNAUTHORIZED,
       );
     }
-    return await post.remove();
+    await post.remove();
+    return post;
   }
-  /*async findPostBySeller(userId: string): Promise<Post[]> {
-    return await this.postModel
-      .find({ owner: userId })
-      .populate('owner', '-password');
-  }*/
+  async findPostBySeller(owner: string) {
+    return await this.postModel.find({
+      'owner.userId': owner,
+    });
+  }
+  async deletePost(id: string) {
+    const post = this.postModel.findOneAndDelete({ _id: id });
+    return post;
+  }
 }

@@ -4,6 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
+import { MessageModule } from './message/message.module';
+import { MessagesGateway } from './message/message.gateway';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -15,8 +17,9 @@ import { PostModule } from './post/post.module';
     UserModule,
     AuthModule,
     PostModule,
+    MessageModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [MessagesGateway],
 })
 export class AppModule {}
